@@ -1,0 +1,223 @@
+[gd_scene load_steps=17 format=3 uid="uid://2gauxqyv67l3"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_qbalb"]
+[ext_resource type="Script" path="res://scripts/player/eyes.gd" id="2_fqc42"]
+[ext_resource type="Texture2D" uid="uid://d2mwer3imaeww" path="res://assets/images/player_light_format.tres" id="2_sxos5"]
+[ext_resource type="Resource" uid="uid://csfoqgmddsusg" path="res://resources/projectiles/bullets/basic_bullet_resource.tres" id="2_y8515"]
+[ext_resource type="PackedScene" uid="uid://c5mbrm8t5a47k" path="res://scenes/components/light_component.tscn" id="5_duuov"]
+[ext_resource type="PackedScene" uid="uid://c4cy4lg43hmhq" path="res://scenes/components/gun_component.tscn" id="6_lniga"]
+[ext_resource type="PackedScene" uid="uid://hrgg3gty27bk" path="res://scenes/components/stamina_component.tscn" id="7_g6j46"]
+[ext_resource type="Script" path="res://scripts/player/UI/energy_bar.gd" id="7_o5pgh"]
+[ext_resource type="AudioStream" uid="uid://c8a112ejmcsk2" path="res://assets/audios/player-movement-sound.mp3" id="8_n8ce8"]
+[ext_resource type="Script" path="res://scripts/player/UI/current_ammo_panel.gd" id="8_pbgd2"]
+[ext_resource type="Script" path="res://scripts/player/UI/stamina_bar.gd" id="9_scrp8"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0jbne"]
+polygon = PackedVector2Array(-5, -10, 4, -8, 8, -4, 8, 4, 4, 8, -5, 10, -6, 9, -6, -9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dthwl"]
+bg_color = Color(0.909804, 0.490196, 0.0784314, 0.392157)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(1, 0.87451, 0.552941, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m5lp6"]
+bg_color = Color(0.929412, 0.705882, 0.0627451, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(1, 0.87451, 0.552941, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ndpkv"]
+bg_color = Color(0.101961, 0.388235, 0.584314, 0.392157)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.509804, 0.768627, 0.870588, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxfye"]
+bg_color = Color(0.0784314, 0.392157, 0.54902, 1)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.509804, 0.768627, 0.870588, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_qbalb")
+
+[node name="Body" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-5, 10, 4, 8, 8, 4, 8, -4, 4, -8, -5, -10, -6, -9, -6, 9)
+
+[node name="Skin" type="Polygon2D" parent="."]
+unique_name_in_owner = true
+color = Color(0.792157, 0.0980392, 0.0823529, 1)
+polygon = PackedVector2Array(-6, -9, -5, -10, 4, -8, 8, -4, 8, 4, 4, 8, -5, 10, -6, 9)
+
+[node name="Shadow" type="LightOccluder2D" parent="Skin"]
+occluder = SubResource("OccluderPolygon2D_0jbne")
+
+[node name="Arm" type="Polygon2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(16, 20)
+color = Color(0.0901961, 0.0901961, 0.14902, 1)
+antialiased = true
+polygon = PackedVector2Array(0, -2, 2, -3, 3, -3, 5, -2, 5, 2, 3, 3, 2, 3, 0, 2, 0, 3, -9, 3, -10, 1, -10, -1, -9, -3, 0, -3)
+
+[node name="BulletSpawner" type="Node2D" parent="Arm"]
+unique_name_in_owner = true
+position = Vector2(6, 0)
+
+[node name="Head" type="Polygon2D" parent="."]
+position = Vector2(8, 0)
+polygon = PackedVector2Array(0, 2, 1, 1, 1, -1, 0, -2)
+
+[node name="PointLight" type="PointLight2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(9, 0)
+enabled = false
+color = Color(0.196078, 1, 1, 0.784314)
+shadow_enabled = true
+shadow_filter = 1
+texture = ExtResource("2_sxos5")
+
+[node name="Eyes" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(3.25, 3.25)
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+drag_left_margin = 1.0
+drag_top_margin = 1.0
+drag_right_margin = 1.0
+drag_bottom_margin = 1.0
+script = ExtResource("2_fqc42")
+
+[node name="ComponentsManager" type="Node2D" parent="."]
+
+[node name="LightComponent" parent="ComponentsManager" node_paths=PackedStringArray("light_source") instance=ExtResource("5_duuov")]
+light_source = NodePath("../../PointLight")
+refresh_time = 1.0
+
+[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("gun_container", "bullet_spawner") instance=ExtResource("6_lniga")]
+projectile_resource = ExtResource("2_y8515")
+gun_container = NodePath("../../Arm")
+bullet_spawner = NodePath("../../Arm/BulletSpawner")
+
+[node name="StaminaComponent" parent="ComponentsManager" instance=ExtResource("7_g6j46")]
+max_stamina = 100.0
+current_stamina = 100.0
+stamina_consumption = 20.0
+refresh_time = 2.0
+
+[node name="TimerContainer" type="Node2D" parent="."]
+
+[node name="FootStepSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_n8ce8")
+
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+
+[node name="MainPanel" type="Panel" parent="PlayerUI"]
+offset_left = 1049.0
+offset_top = 492.0
+offset_right = 1249.0
+offset_bottom = 692.0
+
+[node name="EnergyBar" type="ProgressBar" parent="PlayerUI/MainPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.75
+anchor_bottom = 1.0
+offset_right = -1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_dthwl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_m5lp6")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("7_o5pgh")
+
+[node name="StaminaBar" type="ProgressBar" parent="PlayerUI/MainPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.52588e-05
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_ndpkv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fxfye")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("9_scrp8")
+
+[node name="CurrentAmmoPanel" type="Panel" parent="PlayerUI/MainPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_vertical = 2
+script = ExtResource("8_pbgd2")
+
+[node name="CurrentAmmoLabel" type="Label" parent="PlayerUI/MainPanel/CurrentAmmoPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -6.0
+offset_bottom = -39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Division" type="ColorRect" parent="PlayerUI/MainPanel/CurrentAmmoPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.58
+anchor_right = 1.0
+anchor_bottom = 0.58
+offset_left = 20.0
+offset_top = -2.0
+offset_right = -19.0
+offset_bottom = 2.0
+color = Color(0.866667, 0.866667, 0.866667, 1)
+
+[node name="MaxAmmoLabel" type="Label" parent="PlayerUI/MainPanel/CurrentAmmoPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 54.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="current_energy_changed" from="ComponentsManager/LightComponent" to="PlayerUI/MainPanel/EnergyBar" method="_on_light_component_current_energy_changed"]
+[connection signal="current_ammo_changed" from="ComponentsManager/GunComponent" to="PlayerUI/MainPanel/CurrentAmmoPanel" method="_on_gun_component_current_ammo_changed"]
+[connection signal="current_stamina_changed" from="ComponentsManager/StaminaComponent" to="PlayerUI/MainPanel/StaminaBar" method="_on_stamina_component_current_stamina_changed"]
+[connection signal="state_changed" from="ComponentsManager/StaminaComponent" to="." method="_on_stamina_component_state_changed"]

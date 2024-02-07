@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5mbrm8t5a47k"]
+
+[ext_resource type="Script" path="res://scripts/components/light_component.gd" id="1_ejwm3"]
+
+[node name="LightComponent" type="Node2D"]
+script = ExtResource("1_ejwm3")
+current_energy = 100.0
+max_energy = 100.0
+energy_consumption = 10.0
+
+[node name="RefreshTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="RefreshTimer" to="." method="_on_timer_timeout"]

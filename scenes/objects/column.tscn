@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bofk12m7de8on"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_oq1xu"]
+polygon = PackedVector2Array(74, 0, 74, 74, 0, 74, 0, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yiuwq"]
+size = Vector2(75, 75)
+
+[node name="Column" type="StaticBody2D"]
+
+[node name="Shadow" type="LightOccluder2D" parent="."]
+position = Vector2(-37, -37)
+occluder = SubResource("OccluderPolygon2D_oq1xu")
+
+[node name="Skin" type="Polygon2D" parent="."]
+position = Vector2(-37.5, -37.5)
+color = Color(0.121569, 0.121569, 0.121569, 1)
+polygon = PackedVector2Array(75, 0, 0, 0, 0, 75, 75, 75)
+
+[node name="Body" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yiuwq")

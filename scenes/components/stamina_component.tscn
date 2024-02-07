@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://hrgg3gty27bk"]
+
+[ext_resource type="Script" path="res://scripts/components/stamina_component.gd" id="1_3kyah"]
+
+[node name="StaminaComponent" type="Node2D"]
+script = ExtResource("1_3kyah")
+
+[node name="RefreshTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="RefreshTimer" to="." method="_on_refresh_timer_timeout"]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://hhx1p5s68moa"]
+
+[ext_resource type="Texture2D" uid="uid://ygakxqj4bo1s" path="res://assets/images/ball.png" id="1_y04ou"]
+[ext_resource type="Script" path="res://scripts/objects/fire_bullet_particles.gd" id="2_7fo6q"]
+
+[sub_resource type="Curve" id="Curve_3au44"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 965.132, 0, 0, Vector2(0.142424, 38.5766), 0.0, 0.0, 0, 0, Vector2(0.287879, 30.0239), -100.799, -100.799, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_cq4ky"]
+_data = [Vector2(0, 0.354665), 0.0, 3.46382, 0, 0, Vector2(0.460606, 1), -0.352167, -0.352167, 0, 0, Vector2(0.724242, 0.471292), -2.19925, -2.19925, 0, 0, Vector2(1, 0), 0.0151825, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_1wgu6"]
+offsets = PackedFloat32Array(0, 0.334437, 1)
+colors = PackedColorArray(1, 1, 1, 0.509934, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="FireBulletParticles" type="CPUParticles2D"]
+show_behind_parent = true
+texture_filter = 1
+position = Vector2(5, 0)
+emitting = false
+amount = 12
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+lifetime_randomness = 0.75
+texture = ExtResource("1_y04ou")
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+damping_min = 1.0
+damping_max = 10.0
+damping_curve = SubResource("Curve_3au44")
+scale_amount_min = 0.05
+scale_amount_max = 0.2
+scale_amount_curve = SubResource("Curve_cq4ky")
+color_ramp = SubResource("Gradient_1wgu6")
+script = ExtResource("2_7fo6q")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

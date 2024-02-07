@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ProjectileBaseResource" load_steps=3 format=3 uid="uid://csfoqgmddsusg"]
+
+[ext_resource type="PackedScene" uid="uid://by0iyg2053ug1" path="res://scenes/player/bullet.tscn" id="1_21f6o"]
+[ext_resource type="Script" path="res://resources/projectiles/Projectile_Base_Resource.gd" id="1_bxmnb"]
+
+[resource]
+script = ExtResource("1_bxmnb")
+base_bullet_scene = ExtResource("1_21f6o")
+damage = 10.0
+speed = 400.0
+max_bullets = 8
+reload_time = 2.0
+shot_time = 0.5

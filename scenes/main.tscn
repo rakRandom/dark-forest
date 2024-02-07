@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://oh3b6fo6ki5n"]
+
+[ext_resource type="PackedScene" uid="uid://bofk12m7de8on" path="res://scenes/objects/column.tscn" id="1_3e6sk"]
+[ext_resource type="PackedScene" uid="uid://ch3ty1y5uoig3" path="res://scenes/managers/projectile_manager.tscn" id="1_7wqxd"]
+[ext_resource type="PackedScene" uid="uid://2gauxqyv67l3" path="res://scenes/player/player.tscn" id="2_vrfxm"]
+[ext_resource type="AudioStream" uid="uid://bfh3qexdaloc4" path="res://assets/audios/main-background.mp3" id="4_eiuvs"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Floor" type="Polygon2D" parent="."]
+color = Color(0.235294, 0.235294, 0.235294, 1)
+polygon = PackedVector2Array(1280, 0, 1280, 720, 0, 720, 0, 0)
+
+[node name="ColumnContainer" type="Node2D" parent="."]
+
+[node name="Column1" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(246, 138)
+
+[node name="Column2" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(1010, 549)
+
+[node name="Column3" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(241, 573)
+
+[node name="Column4" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(1000, 153)
+
+[node name="Column5" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(800, 347)
+
+[node name="Column6" parent="ColumnContainer" instance=ExtResource("1_3e6sk")]
+position = Vector2(491, 344)
+
+[node name="ProjectileContainer" type="Node2D" parent="." groups=["Projectile_Container"]]
+
+[node name="Player" parent="." instance=ExtResource("2_vrfxm")]
+position = Vector2(327, 235)
+
+[node name="ManagerContainer" type="Node2D" parent="."]
+
+[node name="ProjectileManager" parent="ManagerContainer" instance=ExtResource("1_7wqxd")]
+
+[node name="BackgroundSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_eiuvs")
+volume_db = 10.0
+pitch_scale = 0.4
+autoplay = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="Sun" type="DirectionalLight2D" parent="."]
+color = Color(1, 0.0392157, 0.0784314, 0.392157)

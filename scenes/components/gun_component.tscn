@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4cy4lg43hmhq"]
+
+[ext_resource type="Script" path="res://scripts/components/gun_component.gd" id="1_xwwkc"]
+
+[node name="GunComponent" type="Node2D"]
+script = ExtResource("1_xwwkc")
+
+[node name="Timers" type="Node2D" parent="."]
+
+[node name="ShotTimer" type="Timer" parent="Timers"]
+unique_name_in_owner = true
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[node name="ReloadTimer" type="Timer" parent="Timers"]
+unique_name_in_owner = true
+wait_time = 2.0
+one_shot = true
+
+[node name="AudioStreams" type="Node2D" parent="."]
+
+[node name="ShotSound" type="AudioStreamPlayer2D" parent="AudioStreams"]
+unique_name_in_owner = true
+
+[node name="ReloadSound" type="AudioStreamPlayer2D" parent="AudioStreams"]
+unique_name_in_owner = true
