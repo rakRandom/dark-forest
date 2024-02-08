@@ -8,8 +8,8 @@ colors = PackedColorArray(1, 1, 1, 1, 0.502265, 0.502265, 0.502265, 1, 0.145228,
 
 [resource]
 gradient = SubResource("Gradient_d83yi")
-width = 800
-height = 800
+width = 700
+height = 700
 use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0.487179)

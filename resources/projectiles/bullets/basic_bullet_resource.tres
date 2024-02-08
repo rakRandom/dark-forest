@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="ProjectileBaseResource" load_steps=3 format=3 uid="uid://csfoqgmddsusg"]
 
-[ext_resource type="PackedScene" uid="uid://by0iyg2053ug1" path="res://scenes/player/bullet.tscn" id="1_21f6o"]
-[ext_resource type="Script" path="res://resources/projectiles/Projectile_Base_Resource.gd" id="1_bxmnb"]
+[ext_resource type="PackedScene" uid="uid://by0iyg2053ug1" path="res://scenes/projectiles/bullets/bullet.tscn" id="1_21f6o"]
+[ext_resource type="Script" path="res://resources/projectiles/projectile_base_resource.gd" id="2_g2ah2"]
 
 [resource]
-script = ExtResource("1_bxmnb")
+script = ExtResource("2_g2ah2")
 base_bullet_scene = ExtResource("1_21f6o")
 damage = 10.0
 speed = 400.0

@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3 uid="uid://dr8euf6legcdk"]
+
+[ext_resource type="PackedScene" uid="uid://djh4tw7knlxwg" path="res://scenes/components/movement_component.tscn" id="1_4d2dj"]
+[ext_resource type="Script" path="res://scripts/enemies/bob_the_enemy.gd" id="1_4o61i"]
+[ext_resource type="AudioStream" uid="uid://c8a112ejmcsk2" path="res://assets/audios/player-movement-sound.mp3" id="3_2jyhr"]
+[ext_resource type="Resource" uid="uid://csfoqgmddsusg" path="res://resources/projectiles/bullets/basic_bullet_resource.tres" id="3_sybrv"]
+[ext_resource type="PackedScene" uid="uid://c4cy4lg43hmhq" path="res://scenes/components/gun_component.tscn" id="4_2ht5g"]
+[ext_resource type="AudioStream" uid="uid://btndm40n8olyl" path="res://assets/audios/gun-fire-sound.mp3" id="4_058ek"]
+[ext_resource type="AudioStream" uid="uid://cbuk25pgyvn3y" path="res://assets/audios/reload.mp3" id="5_b7vap"]
+[ext_resource type="PackedScene" uid="uid://hhx1p5s68moa" path="res://scenes/objects/fire_bullet_particles.tscn" id="6_tqbcy"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_inj8m"]
+polygon = PackedVector2Array(-20, -8, -15, -10, -3, -17, 2, -17, 10, -10, 13, -5, 8, -8, 0, -12, -10, -5, -10, 5, 0, 12, 8, 8, 13, 6, 10, 10, 2, 17, -3, 17, -15, 10, -20, 8)
+
+[sub_resource type="Curve" id="Curve_2tf8e"]
+_data = [Vector2(0, 0.5), 0.0, 2.75729, 0, 0, Vector2(0.253968, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.098901), -2.07692, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_iy4mk"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0.137255, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Bob" type="CharacterBody2D"]
+script = ExtResource("1_4o61i")
+
+[node name="Body" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-20, -8, -15, -10, -3, -17, 2, -17, 10, -10, 13, -5, 8, -8, 0, -12, -10, -5, -10, 5, 0, 12, 8, 8, 13, 6, 10, 10, 2, 17, -3, 17, -15, 10, -20, 8)
+
+[node name="Skin" type="Node2D" parent="."]
+
+[node name="Shadow" type="LightOccluder2D" parent="Skin"]
+occluder = SubResource("OccluderPolygon2D_inj8m")
+
+[node name="Tail" type="Polygon2D" parent="Skin"]
+color = Color(0.247059, 0.168627, 0.568627, 1)
+polygon = PackedVector2Array(-20, -8, -15, -10, -15, 10, -20, 8)
+
+[node name="Detail1" type="Polygon2D" parent="Skin/Tail"]
+color = Color(0.301961, 0.364706, 0.423529, 1)
+polygon = PackedVector2Array(-20, -8, -15, -9, -15, 9, -20, 8)
+
+[node name="Fang1" type="Polygon2D" parent="Skin"]
+color = Color(0.8, 0.0470588, 0.105882, 1)
+polygon = PackedVector2Array(10, 10, 8, 8, 10, 8, 13, 6)
+
+[node name="Inner" type="Polygon2D" parent="Skin/Fang1"]
+color = Color(0.360784, 0.168627, 0.568627, 1)
+polygon = PackedVector2Array(8, 8, 10, 8, 13, 6)
+
+[node name="Fang2" type="Polygon2D" parent="Skin"]
+color = Color(0.8, 0.0470588, 0.105882, 1)
+polygon = PackedVector2Array(8, -8, 10, -10, 13, -5, 10, -8)
+
+[node name="Inner" type="Polygon2D" parent="Skin/Fang2"]
+color = Color(0.568627, 0.188235, 0.168627, 1)
+polygon = PackedVector2Array(8, -8, 10, -8, 13, -5)
+
+[node name="Torso" type="Polygon2D" parent="Skin"]
+color = Color(0.0352941, 0.0784314, 0.145098, 1)
+polygon = PackedVector2Array(8, -8, 0, -12, -8, -8, -10, -5, -10, 5, -8, 8, 0, 12, 8, 8, 10, 10, 2, 17, -3, 17, -15, 10, -15, -10, -3, -17, 2, -17, 10, -10)
+
+[node name="Detail1" type="Polygon2D" parent="Skin/Torso"]
+color = Color(0.431373, 0.568627, 0.168627, 1)
+polygon = PackedVector2Array(-10, -5, -8, -8, 0, -12)
+
+[node name="Detail2" type="Polygon2D" parent="Skin/Torso"]
+color = Color(0.568627, 0.168627, 0.262745, 1)
+polygon = PackedVector2Array(-10, 5, -8, 8, 0, 12)
+
+[node name="WalkParticles" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2(-20, 0)
+amount = 16
+lifetime = 0.5
+randomness = 0.5
+lifetime_randomness = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(2, 5)
+direction = Vector2(-1, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 25.0
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_2tf8e")
+color_ramp = SubResource("Gradient_iy4mk")
+
+[node name="ComponentsManager" type="Node2D" parent="."]
+
+[node name="MovementComponent" parent="ComponentsManager" node_paths=PackedStringArray("walk_particles") instance=ExtResource("1_4d2dj")]
+unique_name_in_owner = true
+walk_speed = 100.0
+walk_sound_stream = ExtResource("3_2jyhr")
+walk_particles = NodePath("../../WalkParticles")
+
+[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("4_2ht5g")]
+unique_name_in_owner = true
+projectile_resource = ExtResource("3_sybrv")
+bullet_spawner = NodePath("../../Skin")
+shot_sound_stream = ExtResource("4_058ek")
+reload_sound_stream = ExtResource("5_b7vap")
+fire_bullet_particles = ExtResource("6_tqbcy")

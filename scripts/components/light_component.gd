@@ -13,18 +13,12 @@ var can_refresh = true
 
 @onready var refresh_timer = $RefreshTimer
 
+
 func _ready():
 	current_energy_changed.emit(current_energy, max_energy)
 
+
 func _process(delta):
-	if Input.is_action_just_pressed("toggle_light"):
-		if current_energy > 0 and light_source.enabled == false:
-			light_source.enabled = true
-		elif light_source.enabled == true:
-			light_source.enabled = false
-			can_refresh = false
-			refresh_timer.start(refresh_time)
-	
 	if current_energy <= 0 and light_source.enabled == true:
 		light_source.enabled = false
 		can_refresh = false
@@ -36,6 +30,15 @@ func _process(delta):
 	elif current_energy < max_energy and can_refresh:
 		current_energy += energy_consumption * delta
 		current_energy_changed.emit(current_energy, max_energy)
+
+
+func toggle_light():
+	if current_energy > 0 and light_source.enabled == false:
+		light_source.enabled = true
+	elif light_source.enabled == true:
+		light_source.enabled = false
+		can_refresh = false
+		refresh_timer.start(refresh_time)
 
 
 func _on_timer_timeout():

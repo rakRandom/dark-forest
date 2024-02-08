@@ -14,16 +14,12 @@ var can_refresh: bool = true
 
 @onready var refresh_timer = $RefreshTimer
 
+
 func _ready():
 	current_stamina_changed.emit(current_stamina, max_stamina)
 
+
 func _process(delta):
-	if Input.is_action_just_pressed("run"):
-		if current_stamina > 0 and is_using_stamina == false:
-			update_state(true)
-		elif is_using_stamina == true:
-			update_state(false)
-	
 	if current_stamina <= 0 and is_using_stamina == true:
 		update_state(false)
 		
@@ -34,6 +30,14 @@ func _process(delta):
 		current_stamina += stamina_consumption * delta
 		current_stamina_changed.emit(current_stamina, max_stamina)
 
+
+func toggle_run():
+	if current_stamina > 0 and is_using_stamina == false:
+		update_state(true)
+	elif is_using_stamina == true:
+		update_state(false)
+
+
 func update_state(new_state: bool):
 	is_using_stamina = new_state
 	state_changed.emit(is_using_stamina)
@@ -41,6 +45,7 @@ func update_state(new_state: bool):
 	if new_state == false:
 		can_refresh = false
 		refresh_timer.start(refresh_time)
+
 
 func _on_refresh_timer_timeout():
 	can_refresh = true

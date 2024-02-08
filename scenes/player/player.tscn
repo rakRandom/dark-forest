@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://2gauxqyv67l3"]
+[gd_scene load_steps=23 format=3 uid="uid://2gauxqyv67l3"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_qbalb"]
 [ext_resource type="Script" path="res://scripts/player/eyes.gd" id="2_fqc42"]
@@ -6,14 +6,26 @@
 [ext_resource type="Resource" uid="uid://csfoqgmddsusg" path="res://resources/projectiles/bullets/basic_bullet_resource.tres" id="2_y8515"]
 [ext_resource type="PackedScene" uid="uid://c5mbrm8t5a47k" path="res://scenes/components/light_component.tscn" id="5_duuov"]
 [ext_resource type="PackedScene" uid="uid://c4cy4lg43hmhq" path="res://scenes/components/gun_component.tscn" id="6_lniga"]
+[ext_resource type="AudioStream" uid="uid://btndm40n8olyl" path="res://assets/audios/gun-fire-sound.mp3" id="7_0ku5s"]
 [ext_resource type="PackedScene" uid="uid://hrgg3gty27bk" path="res://scenes/components/stamina_component.tscn" id="7_g6j46"]
+[ext_resource type="PackedScene" uid="uid://hhx1p5s68moa" path="res://scenes/objects/fire_bullet_particles.tscn" id="7_nvjfp"]
 [ext_resource type="Script" path="res://scripts/player/UI/energy_bar.gd" id="7_o5pgh"]
+[ext_resource type="AudioStream" uid="uid://cbuk25pgyvn3y" path="res://assets/audios/reload.mp3" id="8_ix5rv"]
 [ext_resource type="AudioStream" uid="uid://c8a112ejmcsk2" path="res://assets/audios/player-movement-sound.mp3" id="8_n8ce8"]
 [ext_resource type="Script" path="res://scripts/player/UI/current_ammo_panel.gd" id="8_pbgd2"]
 [ext_resource type="Script" path="res://scripts/player/UI/stamina_bar.gd" id="9_scrp8"]
+[ext_resource type="PackedScene" uid="uid://djh4tw7knlxwg" path="res://scenes/components/movement_component.tscn" id="11_trd3b"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0jbne"]
 polygon = PackedVector2Array(-5, -10, 4, -8, 8, -4, 8, 4, 4, 8, -5, 10, -6, 9, -6, -9)
+
+[sub_resource type="Curve" id="Curve_d0k52"]
+_data = [Vector2(0, 0.0869263), 0.0, 6.03522, 0, 0, Vector2(0.364261, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.5981, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_m5uyo"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0.137255, 1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dthwl"]
 bg_color = Color(0.909804, 0.490196, 0.0784314, 0.392157)
@@ -89,6 +101,7 @@ unique_name_in_owner = true
 position = Vector2(9, 0)
 enabled = false
 color = Color(0.196078, 1, 1, 0.784314)
+energy = 0.9
 shadow_enabled = true
 shadow_filter = 1
 texture = ExtResource("2_sxos5")
@@ -107,24 +120,51 @@ script = ExtResource("2_fqc42")
 [node name="ComponentsManager" type="Node2D" parent="."]
 
 [node name="LightComponent" parent="ComponentsManager" node_paths=PackedStringArray("light_source") instance=ExtResource("5_duuov")]
+unique_name_in_owner = true
 light_source = NodePath("../../PointLight")
 refresh_time = 1.0
 
-[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("gun_container", "bullet_spawner") instance=ExtResource("6_lniga")]
+[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("6_lniga")]
+unique_name_in_owner = true
 projectile_resource = ExtResource("2_y8515")
-gun_container = NodePath("../../Arm")
 bullet_spawner = NodePath("../../Arm/BulletSpawner")
+shot_sound_stream = ExtResource("7_0ku5s")
+reload_sound_stream = ExtResource("8_ix5rv")
+fire_bullet_particles = ExtResource("7_nvjfp")
 
 [node name="StaminaComponent" parent="ComponentsManager" instance=ExtResource("7_g6j46")]
+unique_name_in_owner = true
 max_stamina = 100.0
 current_stamina = 100.0
 stamina_consumption = 20.0
 refresh_time = 2.0
 
+[node name="MovementComponent" parent="ComponentsManager" node_paths=PackedStringArray("walk_particles") instance=ExtResource("11_trd3b")]
+unique_name_in_owner = true
+walk_speed = 75.0
+walk_sound_stream = ExtResource("8_n8ce8")
+walk_particles = NodePath("../../WalkParticles")
+
 [node name="TimerContainer" type="Node2D" parent="."]
 
-[node name="FootStepSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("8_n8ce8")
+[node name="WalkParticles" type="CPUParticles2D" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+emitting = false
+lifetime = 0.5
+randomness = 0.5
+lifetime_randomness = 0.5
+emission_shape = 1
+emission_sphere_radius = 4.0
+direction = Vector2(-1, 0)
+spread = 50.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_d0k52")
+color_ramp = SubResource("Gradient_m5uyo")
 
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 
