@@ -9,12 +9,12 @@
 [ext_resource type="AudioStream" uid="uid://btndm40n8olyl" path="res://assets/audios/gun-fire-sound.mp3" id="7_0ku5s"]
 [ext_resource type="PackedScene" uid="uid://hrgg3gty27bk" path="res://scenes/components/stamina_component.tscn" id="7_g6j46"]
 [ext_resource type="PackedScene" uid="uid://hhx1p5s68moa" path="res://scenes/objects/fire_bullet_particles.tscn" id="7_nvjfp"]
-[ext_resource type="Script" path="res://scripts/player/UI/energy_bar.gd" id="7_o5pgh"]
 [ext_resource type="AudioStream" uid="uid://cbuk25pgyvn3y" path="res://assets/audios/reload.mp3" id="8_ix5rv"]
 [ext_resource type="AudioStream" uid="uid://c8a112ejmcsk2" path="res://assets/audios/player-movement-sound.mp3" id="8_n8ce8"]
-[ext_resource type="Script" path="res://scripts/player/UI/current_ammo_panel.gd" id="8_pbgd2"]
-[ext_resource type="Script" path="res://scripts/player/UI/stamina_bar.gd" id="9_scrp8"]
 [ext_resource type="PackedScene" uid="uid://djh4tw7knlxwg" path="res://scenes/components/movement_component.tscn" id="11_trd3b"]
+[ext_resource type="Script" path="res://scripts/UI/energy_bar.gd" id="13_oro6t"]
+[ext_resource type="Script" path="res://scripts/UI/stamina_bar.gd" id="14_7mr3b"]
+[ext_resource type="Script" path="res://scripts/UI/current_ammo_panel.gd" id="15_xh3ef"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0jbne"]
 polygon = PackedVector2Array(-5, -10, 4, -8, 8, -4, 8, 4, 4, 8, -5, 10, -6, 9, -6, -9)
@@ -117,14 +117,14 @@ drag_right_margin = 1.0
 drag_bottom_margin = 1.0
 script = ExtResource("2_fqc42")
 
-[node name="ComponentsManager" type="Node2D" parent="."]
+[node name="ComponentsContainer" type="Node2D" parent="."]
 
-[node name="LightComponent" parent="ComponentsManager" node_paths=PackedStringArray("light_source") instance=ExtResource("5_duuov")]
+[node name="LightComponent" parent="ComponentsContainer" node_paths=PackedStringArray("light_source") instance=ExtResource("5_duuov")]
 unique_name_in_owner = true
 light_source = NodePath("../../PointLight")
 refresh_time = 1.0
 
-[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("6_lniga")]
+[node name="GunComponent" parent="ComponentsContainer" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("6_lniga")]
 unique_name_in_owner = true
 projectile_resource = ExtResource("2_y8515")
 bullet_spawner = NodePath("../../Arm/BulletSpawner")
@@ -132,14 +132,14 @@ shot_sound_stream = ExtResource("7_0ku5s")
 reload_sound_stream = ExtResource("8_ix5rv")
 fire_bullet_particles = ExtResource("7_nvjfp")
 
-[node name="StaminaComponent" parent="ComponentsManager" instance=ExtResource("7_g6j46")]
+[node name="StaminaComponent" parent="ComponentsContainer" instance=ExtResource("7_g6j46")]
 unique_name_in_owner = true
 max_stamina = 100.0
 current_stamina = 100.0
 stamina_consumption = 20.0
 refresh_time = 2.0
 
-[node name="MovementComponent" parent="ComponentsManager" node_paths=PackedStringArray("walk_particles") instance=ExtResource("11_trd3b")]
+[node name="MovementComponent" parent="ComponentsContainer" node_paths=PackedStringArray("walk_particles") instance=ExtResource("11_trd3b")]
 unique_name_in_owner = true
 walk_speed = 75.0
 walk_sound_stream = ExtResource("8_n8ce8")
@@ -188,7 +188,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_m5lp6")
 value = 50.0
 fill_mode = 3
 show_percentage = false
-script = ExtResource("7_o5pgh")
+script = ExtResource("13_oro6t")
 
 [node name="StaminaBar" type="ProgressBar" parent="PlayerUI/MainPanel"]
 layout_mode = 1
@@ -204,7 +204,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_fxfye")
 value = 50.0
 fill_mode = 3
 show_percentage = false
-script = ExtResource("9_scrp8")
+script = ExtResource("14_7mr3b")
 
 [node name="CurrentAmmoPanel" type="Panel" parent="PlayerUI/MainPanel"]
 layout_mode = 1
@@ -213,7 +213,7 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
 grow_vertical = 2
-script = ExtResource("8_pbgd2")
+script = ExtResource("15_xh3ef")
 
 [node name="CurrentAmmoLabel" type="Label" parent="PlayerUI/MainPanel/CurrentAmmoPanel"]
 unique_name_in_owner = true
@@ -257,7 +257,7 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="current_energy_changed" from="ComponentsManager/LightComponent" to="PlayerUI/MainPanel/EnergyBar" method="_on_light_component_current_energy_changed"]
-[connection signal="current_ammo_changed" from="ComponentsManager/GunComponent" to="PlayerUI/MainPanel/CurrentAmmoPanel" method="_on_gun_component_current_ammo_changed"]
-[connection signal="current_stamina_changed" from="ComponentsManager/StaminaComponent" to="PlayerUI/MainPanel/StaminaBar" method="_on_stamina_component_current_stamina_changed"]
-[connection signal="state_changed" from="ComponentsManager/StaminaComponent" to="." method="_on_stamina_component_state_changed"]
+[connection signal="current_energy_changed" from="ComponentsContainer/LightComponent" to="PlayerUI/MainPanel/EnergyBar" method="_on_light_component_current_energy_changed"]
+[connection signal="current_ammo_changed" from="ComponentsContainer/GunComponent" to="PlayerUI/MainPanel/CurrentAmmoPanel" method="_on_gun_component_current_ammo_changed"]
+[connection signal="current_stamina_changed" from="ComponentsContainer/StaminaComponent" to="PlayerUI/MainPanel/StaminaBar" method="_on_stamina_component_current_stamina_changed"]
+[connection signal="state_changed" from="ComponentsContainer/StaminaComponent" to="." method="_on_stamina_component_state_changed"]

@@ -18,11 +18,11 @@ func _process(_delta):
 
 
 func movement():
-	var mouse_pos = get_global_mouse_position()
+	var mouse_pos := get_global_mouse_position()
 	rotation = lerp_angle(rotation, rotation + get_angle_to(mouse_pos), 0.1)
 	self_arm.look_at(mouse_pos)
 	
-	var direction = Input.get_vector("left", "right", "front", "back")
+	var direction := Input.get_vector("left", "right", "front", "back")
 	velocity = movement_component.move(velocity, direction)
 	
 	move_and_slide()
@@ -30,27 +30,29 @@ func movement():
 
 func emit_components_signals():
 	# Shot
-	if Input.is_action_just_pressed("fire") and gun_component.current_ammo > 0 and gun_component.can_fire == true and gun_component.reloading == false:
-		# Gun Recoil
-		var tween = create_tween()
-		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_property(self_arm, "position", self_arm.position - Vector2(4, 4) * (get_local_mouse_position() - self_arm.position).normalized(), 0.025)
-		tween.tween_property(self_arm, "position", Vector2(16, 20), 0.1)
-		
+	if Input.is_action_just_pressed("fire"):
 		# Gun Shot Logic
-		gun_component.player_fire()
-	
-	# Reload
-	if Input.is_action_just_pressed("reload") and gun_component.current_ammo != gun_component.max_ammo and gun_component.reloading == false:
-		# Reload Animation
-		var tween = create_tween()
-		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_property(self_arm, "rotation_degrees", 180, 0.5)
-		tween.tween_property(self_arm, "rotation_degrees", 180, gun_component.projectile_resource.reload_time - 1)
-		tween.tween_property(self_arm, "rotation_degrees", 0, 0.4)
+		var shotted: bool = gun_component.gun_fire(get_global_mouse_position())
 		
+		if shotted == true:
+			# Gun Recoil
+			var tween := create_tween()
+			tween.set_ease(Tween.EASE_OUT)
+			tween.tween_property(self_arm, "position", self_arm.position - Vector2(4, 4) * (get_local_mouse_position() - self_arm.position).normalized(), 0.025)
+			tween.tween_property(self_arm, "position", Vector2(16, 20), 0.1)
+		
+	# Reload
+	if Input.is_action_just_pressed("reload"):
 		# Gun Reload Logic
-		gun_component.reload_gun()
+		var reloaded: bool = gun_component.reload_gun()
+		
+		if reloaded == true:
+			# Reload Animation
+			var tween := create_tween()
+			tween.set_ease(Tween.EASE_OUT)
+			tween.tween_property(self_arm, "rotation_degrees", 180, 0.5)
+			tween.tween_property(self_arm, "rotation_degrees", 180, gun_component.projectile_resource.reload_time - 1)
+			tween.tween_property(self_arm, "rotation_degrees", 0, 0.4)
 	
 	# Toggle Light
 	if Input.is_action_just_pressed("toggle_light"):
@@ -62,7 +64,7 @@ func emit_components_signals():
 
 
 func _on_stamina_component_state_changed(is_running):
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.set_ease(Tween.EASE_IN)
 	
 	if is_running == false:

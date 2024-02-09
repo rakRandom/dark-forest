@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dr8euf6legcdk"]
+[gd_scene load_steps=14 format=3 uid="uid://dr8euf6legcdk"]
 
 [ext_resource type="PackedScene" uid="uid://djh4tw7knlxwg" path="res://scenes/components/movement_component.tscn" id="1_4d2dj"]
 [ext_resource type="Script" path="res://scripts/enemies/bob_the_enemy.gd" id="1_4o61i"]
@@ -8,6 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://btndm40n8olyl" path="res://assets/audios/gun-fire-sound.mp3" id="4_058ek"]
 [ext_resource type="AudioStream" uid="uid://cbuk25pgyvn3y" path="res://assets/audios/reload.mp3" id="5_b7vap"]
 [ext_resource type="PackedScene" uid="uid://hhx1p5s68moa" path="res://scenes/objects/fire_bullet_particles.tscn" id="6_tqbcy"]
+[ext_resource type="PackedScene" uid="uid://btwcqavme3tty" path="res://scenes/components/health_component.tscn" id="9_2ann8"]
+[ext_resource type="PackedScene" uid="uid://dguyyb5g4ni16" path="res://scenes/components/enemy_component.tscn" id="10_5dbj1"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_inj8m"]
 polygon = PackedVector2Array(-20, -8, -15, -10, -3, -17, 2, -17, 10, -10, 13, -5, 8, -8, 0, -12, -10, -5, -10, 5, 0, 12, 8, 8, 13, 6, 10, 10, 2, 17, -3, 17, -15, 10, -20, 8)
@@ -86,18 +88,26 @@ scale_amount_max = 4.0
 scale_amount_curve = SubResource("Curve_2tf8e")
 color_ramp = SubResource("Gradient_iy4mk")
 
-[node name="ComponentsManager" type="Node2D" parent="."]
+[node name="ComponentsContainer" type="Node2D" parent="."]
 
-[node name="MovementComponent" parent="ComponentsManager" node_paths=PackedStringArray("walk_particles") instance=ExtResource("1_4d2dj")]
+[node name="MovementComponent" parent="ComponentsContainer" node_paths=PackedStringArray("walk_particles") instance=ExtResource("1_4d2dj")]
 unique_name_in_owner = true
 walk_speed = 100.0
 walk_sound_stream = ExtResource("3_2jyhr")
 walk_particles = NodePath("../../WalkParticles")
 
-[node name="GunComponent" parent="ComponentsManager" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("4_2ht5g")]
+[node name="GunComponent" parent="ComponentsContainer" node_paths=PackedStringArray("bullet_spawner") instance=ExtResource("4_2ht5g")]
 unique_name_in_owner = true
 projectile_resource = ExtResource("3_sybrv")
 bullet_spawner = NodePath("../../Skin")
 shot_sound_stream = ExtResource("4_058ek")
 reload_sound_stream = ExtResource("5_b7vap")
 fire_bullet_particles = ExtResource("6_tqbcy")
+
+[node name="HealthComponent" parent="ComponentsContainer" instance=ExtResource("9_2ann8")]
+unique_name_in_owner = true
+
+[node name="EnemyComponent" parent="ComponentsContainer" instance=ExtResource("10_5dbj1")]
+unique_name_in_owner = true
+view_range = 500.0
+shot_range = 200.0

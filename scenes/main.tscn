@@ -53,7 +53,7 @@ position = Vector2(0, 238)
 
 [node name="ProjectileContainer" type="Node2D" parent="." groups=["Projectile_Container"]]
 
-[node name="Player" parent="." instance=ExtResource("2_vrfxm")]
+[node name="Player" parent="." groups=["PlayerNode"] instance=ExtResource("2_vrfxm")]
 position = Vector2(327, 235)
 
 [node name="ManagerContainer" type="Node2D" parent="."]

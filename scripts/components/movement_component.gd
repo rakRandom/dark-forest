@@ -11,6 +11,7 @@ extends Node2D
 
 @onready var walk_sound = %WalkSound
 
+
 func _ready():
 	walk_sound.stream = walk_sound_stream
 
